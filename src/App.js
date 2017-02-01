@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { TodoForm } from './components/todo/TodoForm';
 import { TodoList } from './components/todo/TodoList';
+import { addTodo, generateId } from './lib/TodoHelpers';
 class App extends Component {
   constructor() {
     super();
@@ -15,6 +16,14 @@ class App extends Component {
       currentTodo: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const newTodo = { id: generateId(), name: this.state.currentTodo, isComplete: false };
+    const updateTodos = addTodo(this.state.todos, newTodo);
+    this.setState({ todos:  updateTodos, currentTodo: '' });
   }
 
   handleInputChange(event) {
@@ -31,6 +40,7 @@ class App extends Component {
         <div className="Todo-App">
             <TodoForm
               handleInputChange={this.handleInputChange}
+              handleSubmit={this.handleSubmit}
               currentTodo={this.state.currentTodo}/>
             <TodoList todos={this.state.todos}/>
         </div>

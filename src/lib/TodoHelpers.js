@@ -1,2 +1,3 @@
 const addTodo = (todos, todo) => [...todos, todo];
-export {addTodo};
+const generateId = () => Math.floor(Math.random() * 100000);
+export {addTodo, generateId};

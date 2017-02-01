@@ -1,6 +1,6 @@
 import { addTodo } from './TodoHelpers';
 
-test('addTodo should add the pass todo to the list', () => {
+test('addTodo should add the pass todo to the list without mutating the original todos list', () => {
   const startTodos = [
     { id: 1, name: 'one', isComplete: false },
     { id: 2, name: 'two', isComplete: false },

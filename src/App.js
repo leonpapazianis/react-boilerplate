@@ -3,12 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 import { TodoForm } from './components/todo/TodoForm';
 import { TodoList } from './components/todo/TodoList';
-import { addTodo, generateId } from './lib/TodoHelpers';
+import { addTodo, generateId, findById, toggleTodo, updateTodo } from './lib/TodoHelpers';
 class App extends Component {
   state = {
     todos: [],
     currentTodo: '',
   };
+  handleToggle = id => {
+    const todo = findById(this.state.todos, id);
+    const toggled = toggleTodo(todo);
+    const updatedTodos = updateTodo(this.state.todos, toggled);
+    this.setState({todos: updatedTodos});
+  }
   handleSubmit = event => {
     event.preventDefault();
     const newTodo = { id: generateId(), name: this.state.currentTodo, isComplete: false };
@@ -36,7 +42,7 @@ class App extends Component {
             handleInputChange={this.handleInputChange}
             handleSubmit={submitHandler}
             currentTodo={this.state.currentTodo}/>
-          <TodoList todos={this.state.todos}/>
+          <TodoList handleToggle={this.handleToggle} todos={this.state.todos}/>
         </div>
       </div >
     );

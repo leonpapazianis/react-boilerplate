@@ -1,10 +1,13 @@
 import React from 'react';
 
-export const TodoItem = props => (
-  <li>
-    <input type="checkbox" defaultChecked={props.isComplete}/>{props.name}
-  </li>
-);
+export const TodoItem = props => {
+  const toggle = props.handleToggle.bind(null,props.id);
+  return (
+    <li>
+      <input type="checkbox" onChange={toggle} checked={props.isComplete}/>{props.name}
+    </li>
+  );
+};
 
 TodoItem.propTypes = {
   name: React.PropTypes.string.isRequired,

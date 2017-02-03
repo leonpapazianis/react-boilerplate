@@ -5,32 +5,25 @@ import { TodoForm } from './components/todo/TodoForm';
 import { TodoList } from './components/todo/TodoList';
 import { addTodo, generateId } from './lib/TodoHelpers';
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      todos: [
-        { id: 1, name: 'first item', isComplete: false },
-        { id: 2, name: 'second item', isComplete: false },
-        { id: 3, name: 'third item', isComplete: false },
-      ],
-      currentTodo: '',
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(event) {
+  state = {
+    todos: [],
+    currentTodo: '',
+  };
+  handleSubmit = event => {
     event.preventDefault();
     const newTodo = { id: generateId(), name: this.state.currentTodo, isComplete: false };
     const updateTodos = addTodo(this.state.todos, newTodo);
-    this.setState({ todos:  updateTodos, currentTodo: '' });
+    this.setState({ todos:  updateTodos, currentTodo: '', errorMessage: '' });
   }
-
-  handleInputChange(event) {
+  handleEmptySubmit = event => {
+    event.preventDefault();
+    this.setState({ errorMessage: 'Please suply a todo name!' });
+  }
+  handleInputChange = event => {
     this.setState({ currentTodo: event.target.value });
   }
-
-  render() {
+  render = () => {
+    const submitHandler = this.state.currentTodo ? this.handleSubmit : this.handleEmptySubmit;
     return (
       <div className="App">
         <div className="App-header">
@@ -38,15 +31,15 @@ class App extends Component {
           <h2>React Todos</h2>
         </div>
         <div className="Todo-App">
-            <TodoForm
-              handleInputChange={this.handleInputChange}
-              handleSubmit={this.handleSubmit}
-              currentTodo={this.state.currentTodo}/>
-            <TodoList todos={this.state.todos}/>
+          {this.state.errorMessage && <span className='error'>{this.state.errorMessage}</span>}
+          <TodoForm
+            handleInputChange={this.handleInputChange}
+            handleSubmit={submitHandler}
+            currentTodo={this.state.currentTodo}/>
+          <TodoList todos={this.state.todos}/>
         </div>
       </div >
     );
   }
 }
-
 export default App;
